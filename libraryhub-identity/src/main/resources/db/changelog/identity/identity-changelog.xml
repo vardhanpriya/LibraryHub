@@ -1,0 +1,29 @@
+<!-- identity-changelog.xml -->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <changeSet  author="priya" id="identity-1">
+        <sqlFile path="changes/v1_create_table.sql"    relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet  author="priya" id="identity-2">
+        <sqlFile path="changes/v1_add_roles_permission_and_rolepermission.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet  author="priya" id="identity-3">
+        <sqlFile path="changes/v1_email_verification_token_table.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+
+
+</databaseChangeLog>
+
+
+
+
+

@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS state (
+    state_id SERIAL PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(50),
+    status VARCHAR(50),
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS city (
+    city_id SERIAL PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+    state_id INT NOT NULL,
+     status VARCHAR(50),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_city_state
+        FOREIGN KEY (state_id)
+        REFERENCES state (state_id)
+        ON DELETE RESTRICT
+);
+

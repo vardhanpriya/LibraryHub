@@ -1,0 +1,33 @@
+plugins {
+	id 'java'
+
+}
+
+group = 'com.libraryhub'
+version = '0.0.1-SNAPSHOT'
+description = 'Project for LibraryHub'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	compileOnly 'org.projectlombok:lombok'
+//	annotationProcessor 'org.projectlombok:lombok'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

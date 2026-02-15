@@ -18,4 +18,6 @@ public interface CityStateService {
     CommonResponse deleteStateByStateId(Integer stateId);
 
     CommonResponse deleteCityByCityId(Integer cityId);
+
+    StateResponse getState(Integer id);
 }

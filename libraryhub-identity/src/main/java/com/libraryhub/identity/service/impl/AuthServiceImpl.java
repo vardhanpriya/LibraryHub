@@ -98,16 +98,16 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByProviderIdAndAuthProviderType(providerId,providerType).orElse(null);
 
         String email = oAuth2User.getAttribute("email");
+        String name = oAuth2User.getAttribute("name");
 
         User emailUser = userRepository.findByEmail(email).orElse(null);
         if(user==null && emailUser==null){
             //signup flow
             String userName  = authUtil.determineUserNameFromOAuth2User(oAuth2User,registrationId,providerId);
-            String namOfTheUser =""; // later
             SignupRequestDto signupRequestDto = new SignupRequestDto();
             signupRequestDto.setUserEmail(userName);
             signupRequestDto.setPassword(null);
-            signupRequestDto.setName(null);
+            signupRequestDto.setName(name);
             user  = signUpInternal(signupRequestDto,providerType,providerId);
         } else if (user!=null) {
             if(email!=null  && !email.isBlank() && !email.equals(user.getEmail())){

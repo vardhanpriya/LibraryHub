@@ -1,6 +1,7 @@
 package com.libraryhub.identity.entity;
 
 
+import com.libraryhub.identity.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

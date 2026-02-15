@@ -23,6 +23,8 @@ public interface StateRepository extends JpaRepository<State, Integer> {
 """)
     Optional<State> findByIdWithCities(@Param("id") Integer id);
 
+    Optional<State> findByStateIdAndStatus(Integer stateId,String status);
+
     boolean existsByNameAndCode(String name,String code);
 
    Optional<State>  findByNameAndCode(String name , String code);

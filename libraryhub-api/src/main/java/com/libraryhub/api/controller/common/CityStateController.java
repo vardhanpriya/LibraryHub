@@ -10,6 +10,7 @@ import com.libraryhub.common.service.CityStateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,9 +20,15 @@ public class CityStateController {
 
     private final CityStateService cityStateService;
 
-    @GetMapping("/state/{id}")
+    @GetMapping("/state-with-cities/state-id/{id}")
     public StateResponse getStateWithCities(@PathVariable Integer id) {
         return cityStateService.getStateWithCities(id);
+    }
+
+    @GetMapping("/state/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public StateResponse getState(@PathVariable Integer id) {
+        return cityStateService.getState(id);
     }
 
     @DeleteMapping("/state/{stateId}")

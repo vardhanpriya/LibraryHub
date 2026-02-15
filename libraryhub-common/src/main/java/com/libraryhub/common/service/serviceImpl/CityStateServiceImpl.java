@@ -161,4 +161,21 @@ public class CityStateServiceImpl implements CityStateService {
                     .build();
         }
     }
+
+    @Override
+    public StateResponse getState(Integer id) {
+
+      Optional<State> state =   stateRepository.findByStateIdAndStatus(id,Constants.ACTIVE);
+      if(state.isPresent()){
+          return  StateResponse.builder()
+                  .stateId(state.get().getStateId())
+                  .name(state.get().getName())
+                  .code(state.get().getCode())
+                  .status(state.get().getStatus())
+                  .build();
+      }else {
+          throw new IllegalArgumentException("State Not found");
+      }
+
+    }
 }

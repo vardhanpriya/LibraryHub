@@ -3,6 +3,7 @@ package com.libraryhub.api.security;
 import com.libraryhub.identity.entity.User;
 import com.libraryhub.identity.repository.UserRepository;
 import com.libraryhub.identity.security.AuthUtil;
+import com.libraryhub.identity.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,9 +44,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String userName = authUtil.getUserNameFromToken(token);
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
                 User user = userRepository.findByEmail(userName).orElseThrow();
+                CustomUserDetails userDetails = new CustomUserDetails(user);
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-                        = new UsernamePasswordAuthenticationToken(user, null, null);
+                        = new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
             filterChain.doFilter(request, response);

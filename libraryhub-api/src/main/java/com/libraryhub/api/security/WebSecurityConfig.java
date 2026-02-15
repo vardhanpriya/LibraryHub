@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                                 "/oauth2/**",
                                 "/login/**"
                         ).permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                      //   .requestMatchers("").hasRole("")
                        // .requestMatchers("/api/geolocator/**").hasRole("ADMIN")
                 )

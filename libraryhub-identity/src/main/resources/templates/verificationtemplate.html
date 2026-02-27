@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Your Email - LibraryHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f8;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: #ffffff;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .content {
+            padding: 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .content h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .verify-button {
+            background-color: #1abc9c;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .verify-button:hover {
+            background-color: #17a589;
+        }
+
+        .footer {
+            background-color: #f0f2f4;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+            color: #777777;
+        }
+
+        .link {
+            word-break: break-all;
+            color: #1abc9c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>LibraryHub</h1>
+    </div>
+
+    <div class="content">
+        <h2>Verify your email address</h2>
+
+        <p>
+            Hello <strong>{{name}}</strong>,
+        </p>
+
+        <p>
+            Thank you for signing up with <strong>LibraryHub</strong>.
+            To complete your registration, please verify your email address by clicking the button below.
+        </p>
+
+        <div class="button-container">
+            <a href="{{verification_link}}" class="verify-button">
+                Verify Email
+            </a>
+        </div>
+
+        <p>
+            If the button doesn’t work, copy and paste this link into your browser:
+        </p>
+
+        <p class="link">
+            {{verification_link}}
+        </p>
+
+        <p>
+            This verification link will expire in <strong>24 hours</strong>.
+            If you didn’t create an account with LibraryHub, you can safely ignore this email.
+        </p>
+
+        <p>
+            Happy reading 📚<br>
+            <strong>The LibraryHub Team</strong>
+        </p>
+    </div>
+
+    <div class="footer">
+        © 2026 LibraryHub. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+</html>

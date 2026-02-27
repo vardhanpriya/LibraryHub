@@ -1,0 +1,12 @@
+rootProject.name = 'LibraryHub'
+
+
+    include 'libraryhub-api'
+    include 'libraryhub-common'
+    include 'libraryhub-notification'
+    include 'libraryhub-identity'
+    include 'libraryhub-payment'
+    include 'libraryhub-catalog'
+    include 'libraryhub-circulation'
+    include 'libraryhub-inventory'
+

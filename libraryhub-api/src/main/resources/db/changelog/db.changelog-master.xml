@@ -1,0 +1,18 @@
+<!-- master-changelog.xml -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+
+    <include file="db/changelog/common/common-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/identity/identity-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/catalog/catalog-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/inventory/inventory-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/circulation/circulation-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/notification/notification-changelog.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/payment/payment-changelog.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>
+

@@ -25,17 +25,27 @@ public class Fine {
     @Column(name = "fine_id")
     private Long fineId;
 
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    private Boolean paid;
+    @Column(name = "status", nullable = false, length = 30)
+    private String status; // e.g., UNPAID, PAID, WAIVED
 
     @Column(name = "paid_date")
     private LocalDate paidDate;
+
+
+    @Column(name = "paid_amount", precision = 10, scale = 2)
+    private BigDecimal paidAmount = BigDecimal.ZERO;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "waived_by")
+    private User waivedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_id", nullable = false)
     private Loan loan;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

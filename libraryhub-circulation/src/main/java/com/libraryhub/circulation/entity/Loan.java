@@ -33,6 +33,14 @@ public class Loan {
     @JoinColumn(name = "branch_id", nullable = false)
     private LibraryBranch branch;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", nullable = false)
+    private User createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "returned_by")
+    private User renewedBy;
+
     @Column(name = "issue_date")
     private LocalDate issueDate;
 
@@ -58,6 +66,8 @@ public class Loan {
     @JoinColumn(name = "loan_policy_id")
     private LoanPolicy loanPolicy; // policy applied during issue
 
+    @Column(name = "last_renewed_at")
+    private LocalDateTime lastRenewedAt;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

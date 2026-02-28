@@ -10,7 +10,12 @@ CREATE TABLE book_acquisition (
     status VARCHAR(50) NOT NULL DEFAULT 'PENDING', -- PENDING, RECEIVED, CANCELLED
     received_by BIGINT, -- optional: user_id of staff who received books
     remarks TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_acquisition_received_by
+    FOREIGN KEY (received_by)
+    REFERENCES users(user_id)
+    ON DELETE SET NULL
 );
 
 CREATE INDEX idx_bookacquisition_book ON book_acquisition(book_id);
@@ -22,7 +27,7 @@ CREATE TABLE book_copy (
     copy_id BIGSERIAL PRIMARY KEY,
     barcode VARCHAR(100) NOT NULL UNIQUE,
     shelf_location VARCHAR(100),
-    status VARCHAR(50) NOT NULL DEFAULT 'AVAILABLE', -- AVAILABLE, LOANED, DAMAGED
+    status VARCHAR(50) NOT NULL DEFAULT 'AVAILABLE', -- AVAILABLE, LOANED, DAMAGED ,RESERVED,MAINTENANCE
     condition VARCHAR(50) NOT NULL DEFAULT 'NEW',    -- NEW, GOOD, FAIR, POOR
     book_id BIGINT NOT NULL REFERENCES book(book_id) ON DELETE RESTRICT,
     branch_id BIGINT NOT NULL REFERENCES library_branch(branch_id) ON DELETE RESTRICT,

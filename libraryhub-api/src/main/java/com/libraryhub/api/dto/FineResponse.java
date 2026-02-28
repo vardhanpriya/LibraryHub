@@ -13,5 +13,8 @@ public class FineResponse {
     private BigDecimal amount;
     private LocalDate dueDate;
     private String branchName;
+    private String status;
+    private BigDecimal paidAmount;
+    private LocalDate paidDate;
     private String bookTitle;
 }

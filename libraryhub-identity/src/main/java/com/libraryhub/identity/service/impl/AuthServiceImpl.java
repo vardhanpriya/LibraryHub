@@ -42,8 +42,10 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-private final EmailVerificationTokenRepo  emailVerificationTokenRepo;
-private final MailgunEmailService mailgunEmailService;
+    private final EmailVerificationTokenRepo  emailVerificationTokenRepo;
+    private final MailgunEmailService mailgunEmailService;
+
+
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
 

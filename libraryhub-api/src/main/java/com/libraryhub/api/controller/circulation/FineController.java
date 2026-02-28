@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fines")
+@RequestMapping("/v1/fines")
 @RequiredArgsConstructor
 public class FineController
 {
@@ -28,7 +28,8 @@ public class FineController
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Fine> fines = fineRepository.findByLoanUserAndPaidFalse(user);
+        // Fetch all fines (or use findUnpaidByUser if you want only unpaid)
+        List<Fine> fines = fineRepository.findByUser(user);
 
         return fines.stream()
                 .map(f -> FineResponse.builder()
@@ -37,6 +38,9 @@ public class FineController
                         .dueDate(f.getLoan().getDueDate())
                         .branchName(f.getLoan().getBranch().getName())
                         .bookTitle(f.getLoan().getCopy().getBook().getTitle())
+                        .status(f.getStatus())
+                        .paidAmount(f.getPaidAmount())
+                        .paidDate(f.getPaidDate())
                         .build())
                 .toList();
     }

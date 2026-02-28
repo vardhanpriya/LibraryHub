@@ -14,6 +14,18 @@ CREATE TABLE loan (
     loan_policy_id BIGINT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP,
+    last_renewed_at TIMESTAMP,
+    created_by BIGINT,
+   returned_by BIGINT,
+CONSTRAINT fk_loan_created_by
+    FOREIGN KEY (created_by)
+    REFERENCES users(user_id)
+    ON DELETE SET NULL,
+
+    CONSTRAINT fk_loan_returned_by
+        FOREIGN KEY (returned_by)
+        REFERENCES users(user_id)
+        ON DELETE SET NULL,
 
     CONSTRAINT fk_loan_copy
         FOREIGN KEY (copy_id)
@@ -35,18 +47,24 @@ CREATE TABLE loan (
                 REFERENCES loan_policy(policy_id)
                 ON DELETE SET NULL
 );
-
+CREATE UNIQUE INDEX unique_active_loan_per_copy
+ON loan(copy_id)
+WHERE return_date IS NULL;
 CREATE INDEX idx_loan_copy ON loan(copy_id);
 CREATE INDEX idx_loan_user ON loan(user_id);
 CREATE INDEX idx_loan_status ON loan(status);
 
 
 
+-- UNPAID PAID WAIVED PARTIALLY_PAID
+
 CREATE TABLE fine (
     fine_id BIGSERIAL PRIMARY KEY,
     amount DECIMAL(10,2) NOT NULL CHECK (amount >= 0),
-    paid BOOLEAN NOT NULL DEFAULT FALSE,
+    status VARCHAR(30) NOT NULL,
     paid_date DATE,
+    paid_amount DECIMAL(10,2) DEFAULT 0,
+    waived_by BIGINT,
     loan_id BIGINT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -57,7 +75,6 @@ CREATE TABLE fine (
 );
 
 CREATE INDEX idx_fine_loan ON fine(loan_id);
-CREATE INDEX idx_fine_paid ON fine(paid);
 
 
 CREATE TABLE reservation (
@@ -66,15 +83,22 @@ CREATE TABLE reservation (
     expiry_date DATE NOT NULL,
     priority INT NOT NULL DEFAULT 1,
     status VARCHAR(50) NOT NULL,
+    copy_id BIGINT NULL,
     user_id BIGINT NOT NULL,
     book_id BIGINT NOT NULL,
     branch_id BIGINT NOT NULL,
+    notified_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_reservation_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE RESTRICT,
+
+        CONSTRAINT fk_reservation_copy
+            FOREIGN KEY (copy_id)
+            REFERENCES book_copy(copy_id)
+            ON DELETE SET NULL,
 
     CONSTRAINT fk_reservation_book
         FOREIGN KEY (book_id)
@@ -86,6 +110,10 @@ CREATE TABLE reservation (
         REFERENCES library_branch(branch_id)
         ON DELETE RESTRICT
 );
+
+CREATE UNIQUE INDEX unique_active_reservation
+ON reservation(user_id, book_id)
+WHERE status IN ('ACTIVE', 'READY_FOR_PICKUP');
 
 CREATE INDEX idx_reservation_user ON reservation(user_id);
 CREATE INDEX idx_reservation_book ON reservation(book_id);

@@ -5,12 +5,14 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
 
+
+
     <changeSet  author="priya" id="circulation-1">
-        <sqlFile path="changes/loan-fine-reservation.sql"    relativeToChangelogFile="true"/>
+        <sqlFile path="changes/loan-policy-holiday.sql"    relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet  author="priya" id="circulation-2">
-        <sqlFile path="changes/loan-policy-holiday.sql"    relativeToChangelogFile="true"/>
+        <sqlFile path="changes/loan-fine-reservation.sql"    relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet  author="priya" id="circulation-3">

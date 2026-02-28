@@ -10,6 +10,8 @@ CREATE TABLE loan (
     max_renewals INT NOT NULL DEFAULT 3,
     copy_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
+    branch_id BIGINT NOT NULL,
+    loan_policy_id BIGINT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP,
 
@@ -18,10 +20,20 @@ CREATE TABLE loan (
         REFERENCES book_copy(copy_id)
         ON DELETE RESTRICT,
 
+            CONSTRAINT fk_loan_branch
+                FOREIGN KEY (branch_id)
+                REFERENCES library_branch(branch_id)
+                ON DELETE RESTRICT,
+
     CONSTRAINT fk_loan_user
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+
+          CONSTRAINT fk_loan_policy
+                FOREIGN KEY (loan_policy_id)
+                REFERENCES loan_policy(policy_id)
+                ON DELETE SET NULL
 );
 
 CREATE INDEX idx_loan_copy ON loan(copy_id);

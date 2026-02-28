@@ -24,6 +24,15 @@ public class Loan {
     @Column(name = "loan_id")
     private Long loanId;
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id", nullable = false)
+    private LibraryBranch branch;
+
     @Column(name = "issue_date")
     private LocalDate issueDate;
 
@@ -33,21 +42,22 @@ public class Loan {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
-    private String status;
+    private String status; //// e.g., ISSUED, RETURNED, OVERDUE
 
     @Column(name = "renewal_count")
-    private Integer renewalCount;
+    private Integer renewalCount=0;
 
     @Column(name = "max_renewals")
-    private Integer maxRenewals;
+    private Integer maxRenewals =3;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "copy_id", nullable = false)
     private BookCopy copy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "loan_policy_id")
+    private LoanPolicy loanPolicy; // policy applied during issue
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

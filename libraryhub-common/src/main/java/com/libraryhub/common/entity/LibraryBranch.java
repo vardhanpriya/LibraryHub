@@ -23,6 +23,9 @@ public class LibraryBranch {
     @Column(nullable = false, length = 200)
     private String name;
 
+    @Column(name = "branch_code", nullable = false)
+    private String branchCode;
+
     @Column(nullable = false)
     private String address;
 

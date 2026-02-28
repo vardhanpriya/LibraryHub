@@ -24,6 +24,9 @@ public class City {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "city_code" , nullable = false)
+    private String cityCode;
+
     @Column(name = "status")
     private String status;
 

@@ -13,6 +13,7 @@ CREATE TABLE state (
 CREATE TABLE city (
     city_id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    city_code VARCHAR(15) NOT NULL,
     state_id BIGINT NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -23,8 +24,8 @@ CREATE TABLE city (
         REFERENCES state (state_id)
         ON DELETE RESTRICT,
 
-    CONSTRAINT uq_city_name_state
-        UNIQUE (name, state_id)
+ CONSTRAINT uq_city_code_state
+         UNIQUE (state_id, city_code)
 );
 
 CREATE INDEX idx_city_state ON city(state_id);
@@ -33,6 +34,7 @@ CREATE INDEX idx_city_state ON city(state_id);
 CREATE TABLE library_branch (
     branch_id BIGSERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
+    branch_code VARCHAR(50) NOT NULL UNIQUE,
     address TEXT NOT NULL,
     phone VARCHAR(20),
     email VARCHAR(150),
@@ -53,6 +55,8 @@ CREATE TABLE library_branch (
         UNIQUE (name, city_id)
 );
 
+CREATE SEQUENCE branch_code_seq START 1;
+
 CREATE INDEX idx_branch_city ON library_branch(city_id);
 CREATE INDEX idx_branch_status ON library_branch(status);
 CREATE INDEX idx_branch_is_deleted ON library_branch(is_deleted);
@@ -68,33 +72,21 @@ VALUES
 
 
 -- Insert Cities corresponding to the above states
-INSERT INTO city (city_id, name, state_id, status, created_at)
+INSERT INTO city
+(city_id, name, city_code, state_id, status, created_at)
 VALUES
 -- Maharashtra
-(1, 'Mumbai', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(2, 'Pune', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(3, 'Nagpur', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-
--- Karnataka
-(4, 'Bangalore', 2, 'ACTIVE', CURRENT_TIMESTAMP),
-(5, 'Mysore', 2, 'ACTIVE', CURRENT_TIMESTAMP),
-
--- Delhi
-(6, 'New Delhi', 3, 'ACTIVE', CURRENT_TIMESTAMP),
-
--- Tamil Nadu
-(7, 'Chennai', 4, 'ACTIVE', CURRENT_TIMESTAMP),
-(8, 'Coimbatore', 4, 'ACTIVE', CURRENT_TIMESTAMP),
-
+(1, 'Mumbai', 'MH-MUM', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+(2, 'Pune', 'MH-PUN', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+(3, 'Nagpur', 'MH-NAG', 1, 'ACTIVE', CURRENT_TIMESTAMP),
 -- West Bengal
-(9, 'Kolkata', 5, 'ACTIVE', CURRENT_TIMESTAMP),
-(10, 'Durgapur', 5, 'ACTIVE', CURRENT_TIMESTAMP);
+(4, 'Durgapur', 'WB-DUR', 5, 'ACTIVE', CURRENT_TIMESTAMP);
 
 
 INSERT INTO library_branch
-(branch_id, name, address, city_id, status, created_at)
+(branch_id, name, branch_code,address, city_id, status, created_at)
 VALUES
-(1, 'Main Branch', '123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(3, 'South Branch', '123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(2, 'East Branch', '456 East St', 2, 'ACTIVE', CURRENT_TIMESTAMP);
+(1, 'Main Branch','MH-MUM-00001', '123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+(3, 'South Branch', 'MH-MUM-00002','123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+(2, 'East Branch','MH-MUM-00003', '456 East St', 2, 'ACTIVE', CURRENT_TIMESTAMP);
 

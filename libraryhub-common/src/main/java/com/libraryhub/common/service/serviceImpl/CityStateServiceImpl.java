@@ -47,6 +47,7 @@ public class CityStateServiceImpl implements CityStateService {
                                     .map(city -> CityResponse.builder()
                                             .cityId(city.getCityId())
                                             .name(city.getName())
+                                            .cityCode(city.getCityCode())
                                             .build())
                                     .collect(Collectors.toList())
                     )
@@ -93,6 +94,7 @@ public class CityStateServiceImpl implements CityStateService {
 
         City city;
         if (optionalCity.isPresent()) {
+            // Reactivate if inactive
             city = optionalCity.get();
             if (Constants.INACTIVE.equalsIgnoreCase(city.getStatus())) {
                 city.setStatus(Constants.ACTIVE);
@@ -102,14 +104,25 @@ public class CityStateServiceImpl implements CityStateService {
             city = City.builder()
                     .name(request.getName())
                     .status(Constants.ACTIVE)
+
                     .state(state)
                     .build();
 
+
+            String stateCode = state.getCode();
+            String cityCode = stateCode + "-" + request.getName().substring(0,3).toUpperCase();
+            int suffix = 1;
+            while(cityRepository.existsByStateAndCityCode(state, cityCode)) {
+                cityCode = stateCode + "-" + request.getName().substring(0,3).toUpperCase() + suffix;
+                suffix++;
+            }
+            city.setCityCode(cityCode);
             city = cityRepository.save(city);
         }
         return CityResponse.builder()
                 .cityId(city.getCityId())
                 .name(city.getName())
+                .cityCode(city.getCityCode())
                 .stateId(state.getStateId())
                 .stateName(state.getName())
                 .build();

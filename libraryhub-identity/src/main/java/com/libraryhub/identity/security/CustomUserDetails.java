@@ -14,6 +14,10 @@ public class CustomUserDetails implements UserDetails {
 
     private final User user;
 
+    public Long getUserId() {
+        return user.getId();   // make sure this matches your User entity field
+    }
+
     public User getUser() {
         return user;
     }

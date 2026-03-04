@@ -2,6 +2,7 @@
 //
 //
 //import com.libraryhub.circulation.entity.Loan;
+//import com.libraryhub.circulation.request.CreateLoanRequest;
 //import com.libraryhub.circulation.service.LoanService;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.http.ResponseEntity;
@@ -14,12 +15,12 @@
 //
 //    private final LoanService loanService;
 //
-//    @PostMapping
+//    @PostMapping("/create-loan")
 //    public ResponseEntity<?> create(@RequestBody CreateLoanRequest request) {
 //
 //        Loan loan = loanService.createLoan(
 //                request.getUserId(),
-//                request.getCopyId(),
+//                request.reservationId(),
 //                request.getBranchId()
 //        );
 //

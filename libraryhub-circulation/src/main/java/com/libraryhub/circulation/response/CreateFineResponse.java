@@ -1,4 +1,4 @@
-package com.libraryhub.api.dto;
+package com.libraryhub.circulation.response;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class FineResponse {
+public class CreateFineResponse {
     private Long loanId;
     private BigDecimal amount;
     private LocalDate dueDate;

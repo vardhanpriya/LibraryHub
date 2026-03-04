@@ -1,16 +1,19 @@
 package com.libraryhub.api.controller.circulation;
 
 
-import com.libraryhub.api.dto.FineResponse;
+import com.libraryhub.api.response.ApiResponseBuilder;
+import com.libraryhub.circulation.response.CreateFineResponse;
+import com.libraryhub.api.response.ApiResponse;
 import com.libraryhub.circulation.entity.Fine;
 import com.libraryhub.circulation.repository.FineRepository;
+import com.libraryhub.circulation.request.CreateFineRequest;
+import com.libraryhub.circulation.service.FineService;
 import com.libraryhub.identity.entity.User;
 import com.libraryhub.identity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,28 +23,18 @@ import java.util.List;
 public class FineController
 {
 
-    private final FineRepository fineRepository;
-    private final UserRepository userRepository;
+
+    private final FineService fineService;
 
     @GetMapping("/user/{userId}")
-    public List<FineResponse> getUserFines(@PathVariable Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<ApiResponse<List<CreateFineResponse>>> getUserFines(@PathVariable Long userId) {
+        List<CreateFineResponse> fineResponse = fineService.getUserFines(userId);
+        return  ResponseEntity.status(HttpStatus.OK).body(ApiResponseBuilder.success(fineResponse));
+    }
 
-        // Fetch all fines (or use findUnpaidByUser if you want only unpaid)
-        List<Fine> fines = fineRepository.findByUser(user);
-
-        return fines.stream()
-                .map(f -> FineResponse.builder()
-                        .loanId(f.getLoan().getLoanId())
-                        .amount(f.getAmount())
-                        .dueDate(f.getLoan().getDueDate())
-                        .branchName(f.getLoan().getBranch().getName())
-                        .bookTitle(f.getLoan().getCopy().getBook().getTitle())
-                        .status(f.getStatus())
-                        .paidAmount(f.getPaidAmount())
-                        .paidDate(f.getPaidDate())
-                        .build())
-                .toList();
+    @PostMapping("/create-fine")
+    public ResponseEntity<ApiResponse<CreateFineResponse>> createFine(@RequestBody CreateFineRequest fineRequest){
+        CreateFineResponse createFineResponse =  fineService.createFine(fineRequest);
+        return  ResponseEntity.status(HttpStatus.OK).body(ApiResponseBuilder.success(createFineResponse));
     }
 }

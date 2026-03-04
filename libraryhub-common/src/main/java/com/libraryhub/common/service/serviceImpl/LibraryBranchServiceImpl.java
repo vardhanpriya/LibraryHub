@@ -88,9 +88,26 @@ public class LibraryBranchServiceImpl implements LibraryBranchService {
     }
 
     @Override
-    public Optional<LibraryBranch> getBranchById(Long id) {
-        return repository.findById(id)
-                .filter(branch -> !branch.isDeleted());
+    public LibraryBranchResp getBranchById(Long id) {
+        Optional<LibraryBranch> data =   repository.findById(id).filter(branch -> !branch.isDeleted());
+        if(data.isPresent()){
+          return   LibraryBranchResp.builder()
+                    .branchId(data.get().getBranchId())
+                    .name(data.get().getName())
+                    .branchCode(data.get().getBranchCode())
+                    .address(data.get().getAddress())
+                    .phone(data.get().getPhone())
+                    .email(data.get().getEmail())
+                    .openingHours(data.get().getOpeningHours())
+                    .status(data.get().getStatus())
+                    .maxCapacity(data.get().getMaxCapacity())
+                    .cityCode(data.get().getCity().getCityCode())
+                    .cityName(data.get().getCity().getName())
+                    .build();
+
+        }else {
+            throw  new RuntimeException("Branch Not found");
+        }
     }
 
     @Override

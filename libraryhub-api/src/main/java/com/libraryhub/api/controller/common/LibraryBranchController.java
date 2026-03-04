@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/branches")
+@RequestMapping("/branches")
 @RequiredArgsConstructor
 public class LibraryBranchController {
 
@@ -38,9 +38,9 @@ public class LibraryBranchController {
 
     // Get By ID
     @GetMapping("/{id}")
-    public LibraryBranch getById(@PathVariable Long id) {
-        return service.getBranchById(id)
-                .orElseThrow(() -> new RuntimeException("Branch not found"));
+    public ResponseEntity<ApiResponse<LibraryBranchResp>> getById(@PathVariable Long id) {
+        LibraryBranchResp response  = service.getBranchById(id);
+        return  ResponseEntity.ok(ApiResponseBuilder.success(response));
     }
 
     // Update

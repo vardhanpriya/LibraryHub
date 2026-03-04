@@ -5,6 +5,7 @@
 //import com.libraryhub.circulation.repository.FineRepository;
 //import com.libraryhub.circulation.repository.LoanPolicyRepository;
 //import com.libraryhub.circulation.repository.LoanRepository;
+//import com.libraryhub.circulation.repository.ReservationRepository;
 //import com.libraryhub.circulation.service.LoanService;
 //import com.libraryhub.inventory.repository.BookCopyRepository;
 //import jakarta.transaction.Transactional;
@@ -23,11 +24,12 @@
 //    private final LoanPolicyRepository policyRepository;
 //    private final BookCopyRepository copyRepository;
 //    private final FineRepository fineRepository;
+//    private final ReservationRepository repository;
 //
 //    @Transactional
 //    @Override
 //    public Loan createLoan(Long userId,
-//                           Long copyId,
+//                           Long reservationId,
 //                           Long branchId) {
 //
 //        if (loanRepository.existsByCopyIdAndReturnDateIsNull(copyId)) {

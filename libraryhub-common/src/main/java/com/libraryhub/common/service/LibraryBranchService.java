@@ -13,7 +13,7 @@ public interface LibraryBranchService {
     // Read
     List<LibraryBranchResp> getAllBranches();
 
-    Optional<LibraryBranch> getBranchById(Long id);
+    LibraryBranchResp getBranchById(Long id);
 
     // Update
     LibraryBranch updateBranch(Long id, LibraryBranch updatedBranch);

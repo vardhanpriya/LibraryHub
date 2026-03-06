@@ -10,5 +10,4 @@ public interface LoanRepository extends JpaRepository<Loan,Long> {
     List<Loan> findByDueDateBeforeAndReturnDateIsNull(LocalDate today);
     List<Loan> findByUserId(Long userId);
 
-    boolean existsByCopy_CopyIdAndReturnDateIsNull(Long copyId);
 }

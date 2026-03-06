@@ -2,6 +2,7 @@ package com.libraryhub.inventory.entity;
 
 import com.libraryhub.catalog.entity.Book;
 import com.libraryhub.common.entity.LibraryBranch;
+import com.libraryhub.inventory.dto.BookCopyStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,8 @@ public class BookCopy {
     @Column(name = "shelf_location")
     private String shelfLocation;
 
-    private String status;    // e.g., AVAILABLE, LOANED, DAMAGED
+
+    private String status;    // e.g., AVAILABLE, LOANED, DAMAGED , RESERVED
     private String condition; // e.g., NEW, GOOD, POOR
 
     @ManyToOne(fetch = FetchType.LAZY)

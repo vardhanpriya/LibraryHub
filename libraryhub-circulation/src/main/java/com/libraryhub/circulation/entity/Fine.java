@@ -1,5 +1,6 @@
 package com.libraryhub.circulation.entity;
 
+import com.libraryhub.circulation.enums.FineStatus;
 import com.libraryhub.common.entity.LibraryBranch;
 import com.libraryhub.identity.entity.User;
 import jakarta.persistence.*;
@@ -28,8 +29,9 @@ public class Fine {
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
-    private String status; // e.g., UNPAID, PAID, WAIVED
+    private FineStatus status; // e.g., UNPAID, PAID, WAIVED
 
     @Column(name = "paid_date")
     private LocalDate paidDate;

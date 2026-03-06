@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
@@ -28,4 +29,9 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Long> {
     Page<BookCopy> findByStatusAndIsDeletedFalse(String status, Pageable pageable);
 
     boolean existsByBarcode(String barcode);
+    Optional<BookCopy> findFirstByBook_BookIdAndBranch_BranchIdAndStatus(
+            Long bookId,
+            Long branchId,
+            String status
+    );
 }

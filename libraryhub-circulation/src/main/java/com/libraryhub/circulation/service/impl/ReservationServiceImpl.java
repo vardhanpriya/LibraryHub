@@ -2,11 +2,13 @@ package com.libraryhub.circulation.service.impl;
 
 import com.libraryhub.catalog.entity.Book;
 import com.libraryhub.catalog.repository.BookRepository;
+import com.libraryhub.circulation.entity.LoanPolicy;
 import com.libraryhub.circulation.entity.Reservation;
 import com.libraryhub.circulation.enums.ReservationStatus;
 import com.libraryhub.circulation.repository.ReservationRepository;
 import com.libraryhub.circulation.response.CreateReservationResponse;
 import com.libraryhub.circulation.service.ReservationService;
+import com.libraryhub.circulation.utility.ResolveLoanPolicyService;
 import com.libraryhub.common.entity.LibraryBranch;
 import com.libraryhub.common.repository.LibraryBranchRepository;
 import com.libraryhub.identity.entity.User;
@@ -30,14 +32,12 @@ public class ReservationServiceImpl implements ReservationService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final LibraryBranchRepository branchRepository;
+
+    private final ResolveLoanPolicyService loanPolicyService;
     @Override
     @Transactional
     public CreateReservationResponse createReservation(Long userId, Long bookId, Long branchId) {
-        /*
-        User user = userRepository.getReferenceById(userId);
-Book book = bookRepository.getReferenceById(bookId);
-LibraryBranch branch = branchRepository.getReferenceById(branchId);
-         */
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -46,6 +46,8 @@ LibraryBranch branch = branchRepository.getReferenceById(branchId);
 
         LibraryBranch branch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new RuntimeException("Branch not found"));
+
+        LoanPolicy loanPolicy = loanPolicyService.resolveLoanPolicy(user, branch);
 
         boolean exists = reservationRepository
                 .existsByUserAndBookAndStatusIn(
@@ -233,3 +235,9 @@ LibraryBranch branch = branchRepository.getReferenceById(branchId);
         return responses;
     }
 }
+
+        /*
+        User user = userRepository.getReferenceById(userId);
+Book book = bookRepository.getReferenceById(bookId);
+LibraryBranch branch = branchRepository.getReferenceById(branchId);
+         */

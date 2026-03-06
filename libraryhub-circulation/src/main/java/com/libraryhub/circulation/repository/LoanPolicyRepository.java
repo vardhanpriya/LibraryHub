@@ -24,4 +24,25 @@ public interface LoanPolicyRepository extends JpaRepository<LoanPolicy,Long> {
     Optional<LoanPolicy> findByBranchIsNullAndRoleIsNull();
 
 
+    Optional<LoanPolicy> findFirstByBranchAndRoleAndStatus(
+            LibraryBranch branch,
+            Role role,
+            String status
+    );
+
+    Optional<LoanPolicy> findFirstByRoleAndBranchIsNullAndStatus(
+            Role role,
+            String status
+    );
+
+    Optional<LoanPolicy> findFirstByBranchAndRoleIsNullAndStatus(
+            LibraryBranch branch,
+            String status
+    );
+
+    Optional<LoanPolicy> findFirstByBranchIsNullAndRoleIsNullAndStatus(
+            String status
+    );
+
+
 }

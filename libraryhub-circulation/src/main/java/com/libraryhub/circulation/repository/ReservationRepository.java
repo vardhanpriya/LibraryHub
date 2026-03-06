@@ -52,4 +52,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
           @Param("fromDate")  LocalDate fromDate,
           @Param("toDate")  LocalDate toDate
     );
+
+    Optional<Reservation> findTopByBookAndBranchAndStatusOrderByPriorityAsc(Book book, LibraryBranch branch, ReservationStatus reservationStatus);
+
 }

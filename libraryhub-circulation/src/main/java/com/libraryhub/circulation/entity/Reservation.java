@@ -37,7 +37,7 @@ public class Reservation {
     private Integer priority = 1;
 
     @Enumerated(EnumType.STRING)
-    private ReservationStatus status; // could be ACTIVE, READY_FOR_PICKUP, CANCELLED, etc.
+    private ReservationStatus status; // could be ACTIVE,FULFILLED, READY_FOR_PICKUP, CANCELLED, etc.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

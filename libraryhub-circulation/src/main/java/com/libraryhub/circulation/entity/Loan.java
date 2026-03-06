@@ -1,5 +1,6 @@
 package com.libraryhub.circulation.entity;
 
+import com.libraryhub.circulation.enums.LoanStatus;
 import com.libraryhub.common.entity.LibraryBranch;
 import com.libraryhub.identity.entity.User;
 import com.libraryhub.inventory.entity.BookCopy;
@@ -50,7 +51,9 @@ public class Loan {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
-    private String status; //// e.g., ISSUED, RETURNED, OVERDUE
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private LoanStatus status;  // ACTIVE, RETURNED, OVERDUE, LOST
 
     @Column(name = "renewal_count")
     private Integer renewalCount=0;
@@ -60,7 +63,7 @@ public class Loan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "copy_id", nullable = false)
-    private BookCopy copy;
+    private BookCopy bookCopy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_policy_id")

@@ -1,15 +1,14 @@
 package com.libraryhub.circulation.service;
 
 import com.libraryhub.circulation.entity.Loan;
+import com.libraryhub.circulation.response.CreateLoanResponse;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface LoanService {
 
-    Loan createLoan(Long userId,
-                    Long copyId,
-                    Long branchId);
+    CreateLoanResponse createLoan(Long reservationId);
 
     void returnLoan(Long loanId);
 

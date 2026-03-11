@@ -1,7 +1,10 @@
 package com.libraryhub.payment.entity;
 
+import com.libraryhub.payment.enums.PaymentFor;
+import com.libraryhub.payment.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Payment {
 
     @Id
@@ -29,11 +33,23 @@ public class Payment {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
+    @Column(name = "currency", nullable = false)
+    private String currency;
+
+    @Column(name = "payment_for", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PaymentFor paymentFor; // (SUBSCRIPTION / FINE / BOOL_LOSS// )
+
+    @Column(name = "reference_id")
+    private Long referenceId;  // referenceId = user_subscription_id , reference_id = fine_id
+
     @Column(name = "payment_method")
-    private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;  // card or upi
 
     @Column(name = "payment_status")
-    private String paymentStatus;
+    private String paymentStatus;  // (CREATED / SUCCESS / FAILED)
+
 
     @Column(name = "transaction_id")
     private String transactionId;
@@ -43,5 +59,8 @@ public class Payment {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
 }

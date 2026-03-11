@@ -2,6 +2,7 @@ package com.libraryhub.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SubscriptionPlan {
 
     @Id
@@ -34,6 +36,11 @@ public class SubscriptionPlan {
 
     @Column(name = "status", nullable = false)
     private String status;
+
+    /*
+    max_books_allowed
+fine_per_day
+     */
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

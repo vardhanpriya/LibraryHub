@@ -11,6 +11,11 @@
     <changeSet  author="priya" id="payment-1">
         <sqlFile path="changes/create_tables.sql" relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet  author="priya" id="payment-2">
+        <sqlFile path="changes/data_insertion_subscription_plan.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+
 
 
 

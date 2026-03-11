@@ -267,3 +267,16 @@ APIs:
 2. PATCH /api/v1/reservations/{id}/cancel → Cancel reservation
 3. POST /api/v1/loans → Create loan
 4. PATCH /api/v1/loans/{id}/return → Return book + fine creation
+
+
+Payment
+│
+├── Razorpay Order
+│        │
+│        └── Payment Verification
+│
+├── Stripe PaymentIntent
+│        │
+│        └── Webhook
+│
+└── Subscription Activation

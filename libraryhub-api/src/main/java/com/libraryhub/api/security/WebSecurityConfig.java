@@ -23,8 +23,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -52,12 +55,24 @@ public class WebSecurityConfig {
                                 "/swagger-ui.html",
                                 "/auth/**",
                                 "/oauth2/**",
-                                "/login/**"
+                                "/login/**",
+                                "/subscription-plans"
                         ).permitAll()
                                 .anyRequest().authenticated()
                      //   .requestMatchers("").hasRole("")
                        // .requestMatchers("/api/geolocator/**").hasRole("ADMIN")
                 )
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration cfg = new CorsConfiguration();
+                    cfg.setAllowedOrigins(Arrays.asList("http://localhost:5173/","http://localhost:3000/"));
+                    cfg.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173/","http://localhost:3000/"));
+                    cfg.setAllowedMethods(Collections.singletonList("*"));
+                    cfg.setAllowCredentials(true);
+                    cfg.setAllowedHeaders(Collections.singletonList("*"));
+                    cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                    cfg.setMaxAge(3600L);
+                    return cfg;
+                }))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oAuth2->oAuth2.failureHandler((request, response, exception) -> {
                     log.error("OAuth2 Error : {}",exception.getMessage());

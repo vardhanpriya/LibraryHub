@@ -4,18 +4,18 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
-#            scope:
-#              - email
-#              - profile
-#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#        provider:
-#          google:
-#            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-#            token-uri: https://oauth2.googleapis.com/token
-#            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-#            user-name-attribute: sub
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+          #            scope:
+          #              - email
+          #              - profile
+          #            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+          #        provider:
+          #          google:
+          #            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+          #            token-uri: https://oauth2.googleapis.com/token
+          #            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          #            user-name-attribute: sub
           github:
             client-id: ${GITHUB_CLIENT_ID}
             client-secret: ${GITHUB_CLIENT_SECRET}
@@ -49,4 +49,22 @@ jwt:
   secretKey: kfhkshdfkshdjfhhfskjdfhsdkjhf897897fsdfhkj2h43k23hkjh7fysiy32b4hkh
 
 
+mailgun:
+  api:
+    key: ${MAILGUN_API_KEY}
+  domain: ${MAILGUN_DOMAIN}
+  from: ${MAILGUN_FROM}
+  baseurl: ${MAILGUN_URL}
+
+send_email_verification_toggle: false
+
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID}
+  key-secret: ${RAZORPAY_KEY_SECRET}
+  webhook:
+    secret: ${RAZORPAY_WEBHOOK_SECRET}
+
+stripe:
+  api-key: ${STRIPE_PUBLISHABLE_KEY}
+  secret-key: ${STRIPE_SECRET_KEY}
 

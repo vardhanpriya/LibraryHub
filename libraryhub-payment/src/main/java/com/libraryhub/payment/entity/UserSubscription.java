@@ -2,6 +2,7 @@ package com.libraryhub.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserSubscription {
 
     @Id
@@ -33,7 +35,9 @@ public class UserSubscription {
     private LocalDate endDate;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private String status; // ACTIVE  EXPIRED CANCELLED
+
+    // paymentId
 
     @Column(name = "auto_renew", nullable = false)
     private Boolean autoRenew = false;

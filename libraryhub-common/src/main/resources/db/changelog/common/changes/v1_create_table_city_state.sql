@@ -62,31 +62,29 @@ CREATE INDEX idx_branch_status ON library_branch(status);
 CREATE INDEX idx_branch_is_deleted ON library_branch(is_deleted);
 
 -- Insert Indian States
-INSERT INTO state (state_id, name, code, status, created_at)
+INSERT INTO state (name, code, status)
 VALUES
-(1, 'Maharashtra', 'MH', 'ACTIVE', CURRENT_TIMESTAMP),
-(2, 'Karnataka', 'KA', 'ACTIVE', CURRENT_TIMESTAMP),
-(3, 'Delhi', 'DL', 'ACTIVE', CURRENT_TIMESTAMP),
-(4, 'Tamil Nadu', 'TN', 'ACTIVE', CURRENT_TIMESTAMP),
-(5, 'West Bengal', 'WB', 'ACTIVE', CURRENT_TIMESTAMP);
+('Maharashtra','MH','ACTIVE'),
+('Karnataka','KA','ACTIVE'),
+('Delhi','DL','ACTIVE'),
+('Tamil Nadu','TN','ACTIVE'),
+('West Bengal','WB','ACTIVE');
 
 
 -- Insert Cities corresponding to the above states
 INSERT INTO city
-(city_id, name, city_code, state_id, status, created_at)
+(name, city_code, state_id, status)
 VALUES
--- Maharashtra
-(1, 'Mumbai', 'MH-MUM', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(2, 'Pune', 'MH-PUN', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(3, 'Nagpur', 'MH-NAG', 1, 'ACTIVE', CURRENT_TIMESTAMP),
--- West Bengal
-(4, 'Durgapur', 'WB-DUR', 5, 'ACTIVE', CURRENT_TIMESTAMP);
+('Mumbai','MH-MUM',1,'ACTIVE'),
+('Pune','MH-PUN',1,'ACTIVE'),
+('Nagpur','MH-NAG',1,'ACTIVE'),
+('Durgapur','WB-DUR',5,'ACTIVE');
 
 
 INSERT INTO library_branch
-(branch_id, name, branch_code,address, city_id, status, created_at)
+( name, branch_code,address, city_id, status, created_at)
 VALUES
-(1, 'Main Branch','MH-MUM-00001', '123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(3, 'South Branch', 'MH-MUM-00002','123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
-(2, 'East Branch','MH-MUM-00003', '456 East St', 2, 'ACTIVE', CURRENT_TIMESTAMP);
+('Main Branch','MH-MUM-00001', '123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+('South Branch', 'MH-MUM-00002','123 Main St', 1, 'ACTIVE', CURRENT_TIMESTAMP),
+('East Branch','MH-MUM-00003', '456 East St', 2, 'ACTIVE', CURRENT_TIMESTAMP);
 

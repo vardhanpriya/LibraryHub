@@ -1,8 +1,11 @@
 package com.libraryhub.payment.gateway;
 
 
+import com.libraryhub.payment.dto.response.CreatePaymentResponse;
+import com.libraryhub.payment.dto.response.PaymentTransactionDto;
 import com.libraryhub.payment.entity.Payment;
 import com.libraryhub.payment.entity.PaymentTransaction;
+import com.libraryhub.payment.mapper.PaymentTransactionMapper;
 import com.libraryhub.payment.repository.PaymentRepository;
 import com.libraryhub.payment.repository.PaymentTransactionRepository;
 import com.razorpay.Order;
@@ -21,16 +24,18 @@ public class RazorpayPaymentService implements  PaymentGatewayService{
     private final RazorpayClient client;
     private final PaymentTransactionRepository transactionRepository;
     private final PaymentRepository paymentRepository;
+    private final String keyId;
 
-    public RazorpayPaymentService(@Value("${razorpay.key-id}") String keyId,
-                                  @Value("${razorpay.key-secret}") String keySecret,
+    public RazorpayPaymentService( @Value("${razorpay.key-id}") String keyId,
+                                   @Value("${razorpay.key-secret}") String keySecret,
                                   PaymentTransactionRepository transactionRepository, PaymentRepository paymentRepository) throws RazorpayException {
+        this.keyId = keyId;
         this.paymentRepository = paymentRepository;
         this.client = new RazorpayClient(keyId, keySecret);
         this.transactionRepository = transactionRepository;
     }
     @Override
-    public PaymentTransaction createPayment(Long paymentId, BigDecimal amount) throws Exception {
+    public CreatePaymentResponse createPayment(Long paymentId, BigDecimal amount) throws Exception {
 
 
         JSONObject options = new JSONObject();
@@ -51,6 +56,15 @@ public class RazorpayPaymentService implements  PaymentGatewayService{
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return transactionRepository.save(transaction);
+        PaymentTransaction saved = transactionRepository.save(transaction);
+        CreatePaymentResponse response = new CreatePaymentResponse();
+            response.setPaymentId(paymentId);
+            response.setTransactionId(saved.getId());
+            response.setCurrency("INR");
+            response.setGateway("RAZORPAY");
+            response.setAmount(amount);
+            response.setRazorpayKey(keyId);
+            response.setRazorpayOrderId(order.get("id"));
+            return  response;
     }
 }

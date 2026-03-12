@@ -23,4 +23,10 @@
         <sqlFile path="changes/v1_insert_loan_policy.sql"    relativeToChangelogFile="true"/>
     </changeSet>
 
+    <changeSet  author="priya" id="circulation-5">
+        <sqlFile path="changes/create_wishlist_table.sql"    relativeToChangelogFile="true"/>
+    </changeSet>
+
+
+
 </databaseChangeLog>

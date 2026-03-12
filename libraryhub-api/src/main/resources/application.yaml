@@ -67,4 +67,5 @@ razorpay:
 stripe:
   api-key: ${STRIPE_PUBLISHABLE_KEY}
   secret-key: ${STRIPE_SECRET_KEY}
+  webhook-secret: whsec_b3f16c6c0c5d6a213beb20390317dad42c40d48daf70c6afe79b0e6246a2653f
 

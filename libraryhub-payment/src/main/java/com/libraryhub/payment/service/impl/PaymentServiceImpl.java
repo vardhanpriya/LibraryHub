@@ -3,6 +3,8 @@ package com.libraryhub.payment.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.libraryhub.payment.dto.response.CreatePaymentResponse;
+import com.libraryhub.payment.dto.response.PaymentTransactionDto;
 import com.libraryhub.payment.entity.Payment;
 import com.libraryhub.payment.entity.PaymentTransaction;
 import com.libraryhub.payment.enums.PaymentFor;
@@ -12,6 +14,10 @@ import com.libraryhub.payment.repository.PaymentTransactionRepository;
 import com.libraryhub.payment.service.PaymentService;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+import com.stripe.model.Event;
+import com.stripe.model.PaymentIntent;
+import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +42,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${razorpay.key-secret}")
     String razorpaySecret;
 
+    @Value("${stripe.webhook-secret}")
+    String stripeWebhookSecret;
+
     private final ObjectMapper mapper = new ObjectMapper();
     @Override
-    public PaymentTransaction createPayment(Long userId, BigDecimal amount, String gatewayName) throws Exception {
+    public CreatePaymentResponse createPayment(Long userId, BigDecimal amount, String gatewayName) throws Exception {
         Payment payment = Payment.builder()
                 .userId(userId)
                 .amount(amount)
@@ -107,21 +116,19 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void processStripeWebhook(String payload, String signature) {
         try {
+            System.out.println("Inside Stripe webhook");
+            Event event = Webhook.constructEvent(payload, signature, stripeWebhookSecret);
 
-            JsonNode json = mapper.readTree(payload);
+            if ("checkout.session.completed".equals(event.getType())) {
+                System.out.println("**********checkout.session.completed********");
+                Session session = (Session) event.getDataObjectDeserializer()
+                        .getObject().orElse(null);
+                if (session == null) return;
 
-            String event = json.get("type").asText();
+                PaymentTransaction txn = transactionRepository.findByGatewayOrderId(session.getId()).orElseThrow();
+                if ("SUCCESS".equals(txn.getStatus())) {return;}
 
-            if ("payment_intent.succeeded".equals(event)) {
-
-                JsonNode paymentIntent = json.get("data").get("object");
-
-                String paymentIntentId = paymentIntent.get("id").asText();
-
-                PaymentTransaction txn = transactionRepository.findByGatewayOrderId(paymentIntentId)
-                                .orElseThrow();
-
-                txn.setGatewayPaymentId(paymentIntentId);
+                txn.setGatewayPaymentId(session.getPaymentIntent());
                 txn.setStatus("SUCCESS");
                 txn.setGatewayResponse(payload);
 
@@ -132,7 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Stripe webhook verification failed", e);
         }
     }
 
@@ -165,23 +172,5 @@ public class PaymentServiceImpl implements PaymentService {
         }
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
-    }
-
-
-
-    @Transactional
-    public void handlePaymentSuccess(PaymentTransaction transaction, String gatewayPaymentId, String signature, String responseJson) {
-        transaction.setGatewayPaymentId(gatewayPaymentId);
-        transaction.setGatewaySignature(signature);
-        transaction.setStatus("SUCCESS");
-        transaction.setGatewayResponse(responseJson);
-        transactionRepository.save(transaction);
-
-        Payment payment = paymentRepository.findById(transaction.getPayment().getPaymentId()).orElseThrow();
-        payment.setPaymentStatus("SUCCESS");
-        payment.setPaymentDate(LocalDateTime.now());
-        paymentRepository.save(payment);
-
-        // TODO: Create UserSubscription after successful payment
     }
 }

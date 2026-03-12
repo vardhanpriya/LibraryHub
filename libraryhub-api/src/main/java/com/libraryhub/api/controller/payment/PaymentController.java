@@ -1,5 +1,7 @@
 package com.libraryhub.api.controller.payment;
 
+import com.libraryhub.payment.dto.response.CreatePaymentResponse;
+import com.libraryhub.payment.dto.response.PaymentTransactionDto;
 import com.libraryhub.payment.entity.PaymentTransaction;
 import com.libraryhub.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +22,9 @@ public class PaymentController {
     private String webhookSecret;
 
     @PostMapping("/create")
-    public PaymentTransaction createPayment(@RequestParam Long userId,
-                                            @RequestParam BigDecimal amount,
-                                            @RequestParam String gateway) throws Exception {
+    public CreatePaymentResponse createPayment(@RequestParam Long userId,
+                                               @RequestParam BigDecimal amount,
+                                               @RequestParam String gateway) throws Exception {
         return paymentService.createPayment(userId, amount, gateway);
     }
 

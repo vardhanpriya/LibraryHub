@@ -56,7 +56,8 @@ public class WebSecurityConfig {
                                 "/auth/**",
                                 "/oauth2/**",
                                 "/login/**",
-                                "/subscription-plans"
+                                "/subscription-plans",
+                                "/payments/webhooks/**"
                         ).permitAll()
                                 .anyRequest().authenticated()
                      //   .requestMatchers("").hasRole("")

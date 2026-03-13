@@ -48,6 +48,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new RuntimeException("Branch not found"));
 
         LoanPolicy loanPolicy = loanPolicyService.resolveLoanPolicy(user, branch);
+        //todo: before doing anything first we need to check whether has member/user has valid or active subscription or not
 
         boolean exists = reservationRepository
                 .existsByUserAndBookAndStatusIn(

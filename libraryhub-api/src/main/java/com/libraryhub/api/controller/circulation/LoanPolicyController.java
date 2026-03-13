@@ -1,10 +1,13 @@
 package com.libraryhub.api.controller.circulation;
 
+import com.libraryhub.api.response.ApiResponse;
+import com.libraryhub.api.response.ApiResponseBuilder;
 import com.libraryhub.circulation.entity.LoanPolicy;
 import com.libraryhub.circulation.service.LoanPolicyService;
 import com.libraryhub.common.entity.LibraryBranch;
 import com.libraryhub.identity.entity.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +21,9 @@ public class LoanPolicyController {
     private final LoanPolicyService service;
 
     @PostMapping
-    public ResponseEntity<LoanPolicy> create(@RequestBody LoanPolicy policy) {
-        return ResponseEntity.ok(service.createPolicy(policy));
+    public ResponseEntity<ApiResponse<LoanPolicy>> create(@RequestBody LoanPolicy policy) {
+        LoanPolicy response =    service.createPolicy(policy);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponseBuilder.success(response));
     }
 
     @PutMapping("/{id}")
